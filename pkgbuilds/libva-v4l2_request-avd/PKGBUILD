@@ -1,7 +1,7 @@
-# VA-API driver with Apple Video Decoder fixes from the maintained iconidentify fork.
+# VA-API driver with Apple Video Decoder fixes, maintained at omacom/libva-v4l2_request.
 # The asahi alias lets libva discover it on Apple Silicon.
 
-_fork=iconidentify
+_fork=omacom
 _commit=c653eaa6234a02b5f31f77a8aa23f7a744650e87
 pkgname=libva-v4l2_request-avd
 pkgver=1.3.r11.r169.gc653eaa
