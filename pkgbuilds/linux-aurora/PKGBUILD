@@ -5,18 +5,20 @@
 # alt-mode and USB4 support for external monitors, variable refresh rate, and
 # the ISP and AOP drivers. Those changes touch device trees, the type-C stack
 # and DRM, so they cannot ship as a module: this is a whole alternative kernel
-# for Macs on the Omarchy edge channel. It reaches rc and stable only after
-# cold-boot qualification on M1 and M2.
+# for Macs on the Omarchy edge channel.
+#
+# Edge follows the tip of omacom/linux-aurora's integration/aurora branch: the
+# branch watch in .omarchy/package.json pins each new tip here (_commit, pkgver
+# and the archive checksum) and the PR auto-merges once it builds. pkgver is
+# <kernel>.aurora<rel>.<last Aurora release>.r<commits since>.g<commit>, so a
+# tip build sorts above the release it follows and below the next one. A move
+# to a new kernel base changes the version template's prefix.
 
-_auroraver=7.1.12
 _aurorarel=2
-pkgrel=13
+pkgver=7.1.12.aurora2.2026.10.15.19.r0.gccd21b7
+pkgrel=1
 
-# Immutable pin on omacom/linux-aurora: the kernel commit of a published Aurora
-# release (aurora-2026.10.13.18). Every bump is a PR that moves _commit and the
-# archive checksum; the pinned commit is cold-boot qualified on MacBook Pro 14"
-# M1 Pro (j314s) and 16" M2 Max (j416c) first.
-_commit=6f63677751854d57bcfac172314957bc2197c05f
+_commit=ccd21b74b4c229d9f42c7cfce7836daee9057c89
 
 _m1n1_version=1.6.1
 
@@ -24,7 +26,6 @@ pkgbase=linux-aurora
 _srcname=linux-aurora-${_commit}
 _kernelname=${pkgbase#linux}
 _desc="AArch64 Apple Silicon (Aurora kernel)"
-pkgver="${_auroraver}.aurora${_aurorarel}"
 arch=('aarch64')
 url="https://github.com/omacom/linux-aurora"
 license=('GPL2')
@@ -42,10 +43,7 @@ source=(
   rust-toolchain.toml
   linux-aurora-phram.conf  # modprobe.d: no phram at boot
 )
-sha256sums=('4fbf94a590f6ca29da1ea4e7373aeb82c24765a186f3c41745e8a524273cdf5f'
-            '2c8480bf231bddebef3784ccbdf9b93564a3b7687d6e8174b43fe2d540ac6db8'
-            '2a95563bb9f5b216cc3c170a17e9471448bc63a7084bdd67df23d074939b366c'
-            'b6b022b22f14e912d641091eabd53b99e4e35c63baeaaf4c50d27f5d3b9b7fa0')
+sha256sums=('847a5b37f4d94c11a86e7527662ccfad98e2f5849fae646ac23e972dd545acee' '2c8480bf231bddebef3784ccbdf9b93564a3b7687d6e8174b43fe2d540ac6db8' '2a95563bb9f5b216cc3c170a17e9471448bc63a7084bdd67df23d074939b366c' 'b6b022b22f14e912d641091eabd53b99e4e35c63baeaaf4c50d27f5d3b9b7fa0')
 
 # Kbuild takes ARCH literally and knows arm64, not aarch64.
 export ARCH=arm64
@@ -65,7 +63,8 @@ prepare() {
   cd $_srcname
 
   echo "Setting version..."
-  echo "-$_aurorarel-$pkgrel" > localversion.10-pkgrel
+  # The kernel release names the commit: 7.1.12-2-g<commit>-ARCH.
+  echo "-$_aurorarel-g${_commit:0:12}" > localversion.10-pkgrel
 
   local src
   for src in "${source[@]}"; do
