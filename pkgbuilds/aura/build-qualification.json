@@ -1,6 +1,7 @@
 {
-  "source_commit": "8f4ee8808f593802d825bb8fbc6b99b90f46c402",
+  "source_commit": "12a2762b0020cbbe35833367e75ae80af81c82a7",
   "hardware_tested": false,
   "stage1_auto_enrollment": false,
-  "publication_gate": "native build, matched Stage1/Stage2 Neo boot, repair and upgrade qualification"
+  "publication_gate": "native build, matched Stage1/Stage2 Neo boot, repair and upgrade qualification",
+  "source_repository": "https://github.com/omacom/m1n1"
 }

@@ -161,6 +161,57 @@ class MesaRecipeTests(unittest.TestCase):
                 self.assertIn('test -C build --print-errorlogs', result.stdout)
 
 
+class ImageLoaderRecipeTests(unittest.TestCase):
+    def test_prepare_build_package_preserves_distinct_stage_roles(self):
+        recipe = ROOT / 'pkgbuilds/aura/PKGBUILD'
+        record = json.loads(recipe.with_name('build-qualification.json').read_text())
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / 'm1n1'
+            (source / 'data').mkdir(parents=True)
+            (source / '3rdparty_licenses').mkdir()
+            (source / 'LICENSE').write_text('fixture MIT notice')
+            (source / '3rdparty_licenses/fixture').write_text('fixture notice')
+            for size in (128, 256):
+                (root / f'aurora_{size}.bin').write_bytes(bytes([size % 255]) * size)
+                (source / f'data/aurora_{size}.bin').write_bytes((root / f'aurora_{size}.bin').read_bytes())
+            for name in ('build-qualification.json', 'validate-qualification.py'):
+                (root / name).write_bytes(recipe.with_name(name).read_bytes())
+            result = shell(r'''set -euo pipefail
+source "$1"
+srcdir="$2"
+pkgdir="$2/package"
+git() { [[ "$*" == '-C m1n1 rev-parse HEAD' ]] || return 91; printf '%s\n' "$TEST_PIN"; }
+rustup() { [[ "$1 $2" == 'toolchain install' ]] || return 92; printf '%s' "$3" > "$srcdir/toolchain"; }
+make() {
+  [[ "$PWD" == "$srcdir/m1n1" ]] || return 93
+  if [[ "$*" == clean ]]; then rm -rf build; return; fi
+  [[ " $* " == *' RELEASE=1 '* && " $* " == *' CHAINLOADING=1 '* ]] || return 94
+  [[ "$RUSTUP_TOOLCHAIN" == "$(cat "$srcdir/toolchain")" ]] || return 95
+  cmp "$srcdir/aurora_128.bin" data/aurora_128.bin
+  cmp "$srcdir/aurora_256.bin" data/aurora_256.bin
+  mkdir build
+  local role=stage1
+  [[ " $* " != *' ESP_STAGE2=1 '* ]] || role=stage2
+  printf '%s-raw' "$role" > build/m1n1.bin
+  printf '%s-macho' "$role" > build/m1n1.macho
+}
+cd "$srcdir"
+prepare
+build
+cd "$srcdir"
+package
+''', recipe, root, env=dict(os.environ, TEST_PIN=record['source_commit']))
+            self.assertEqual(result.returncode, 0, result.stderr)
+            package = root / 'package'
+            self.assertEqual((package / 'usr/lib/asahi-boot/m1n1.bin').read_text(), 'stage2-raw')
+            self.assertEqual((package / 'usr/share/aura/stage1/aura-raw.bin').read_text(), 'stage1-raw')
+            self.assertEqual((package / 'usr/share/aura/stage1/aura.macho').read_text(), 'stage1-macho')
+            self.assertEqual((package / 'usr/lib/m1n1-neo/m1n1.bin').resolve(),
+                             package / 'usr/lib/asahi-boot/m1n1.bin')
+            self.assertIs(json.loads((package / 'usr/share/doc/aura/build-qualification.json').read_text())['hardware_tested'], False)
+
+
 class QualificationTests(unittest.TestCase):
     def setUp(self):
         path = ROOT / 'pkgbuilds/aura/validate-qualification.py'
