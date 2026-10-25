@@ -1,18 +1,18 @@
 pkgbase=mesa-aurora
 pkgname=('mesa-aurora' 'vulkan-aurora')
 epoch=1
-pkgver=26.3.0_devel.20261024.97a65d845f3
+pkgver=26.3.0_devel.20261025.147a62f6190
 pkgrel=1
 pkgdesc='Aurora Asahi Gallium, Zink and Honeykrisp'
 arch=('aarch64')
 groups=('omarchy-platform-apple-silicon')
-url='https://github.com/chriskearney/siliconforest-mesa'
+url='https://github.com/omacom/mesa'
 license=('MIT')
-_commit=97a65d845f39418aecc693dcaf9dcb14a05849f6
-_src=mesa-siliconforest
-# Temporary source while omacom/mesa's integration branch is established.
-# This exact commit passed boot/pixel checks on J293, J313 and J516S.
-# J613/J615 and full CTS remain separate qualification work.
+# integration/aurora after omacom/mesa#12 and #13. Its driver code matches
+# 97a65d8, which passed boot/pixel checks on J293, J313, J516S and J613; #13
+# changed only docs and the Intel noop shim, which this package doesn't build.
+_commit=147a62f619001f5f2588c7417c2b1fac3b0d93ad
+_src=mesa-omacom
 # Matched to the DRM UAPI in omacom/linux-aurora integration/aurora.
 # The drivers link neither LLVM nor SPIRV-Tools. Arch Linux ARM moves both
 # (llvm-libs changes soname every major, SPIRV-Tools has no versioned soname),
