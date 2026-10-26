@@ -1,17 +1,20 @@
 pkgbase=mesa-aurora
 pkgname=('mesa-aurora' 'vulkan-aurora')
 epoch=1
-pkgver=26.3.0_devel.20261025.147a62f6190
+# Development versions sort by real UTC date, full reachable commit count,
+# then source hash. Hash-only same-day repins can downgrade existing packages.
+pkgver=26.3.0_devel.20261025.231095.7c86130d26c
 pkgrel=1
 pkgdesc='Aurora Asahi Gallium, Zink and Honeykrisp'
 arch=('aarch64')
 groups=('omarchy-platform-apple-silicon')
 url='https://github.com/omacom/mesa'
 license=('MIT')
-# integration/aurora after omacom/mesa#12 and #13. Its driver code matches
-# 97a65d8, which passed boot/pixel checks on J293, J313, J516S and J613; #13
-# changed only docs and the Intel noop shim, which this package doesn't build.
-_commit=147a62f619001f5f2588c7417c2b1fac3b0d93ad
+# integration/aurora after omacom/mesa#15: reviewed memory and SPIR-V fixes.
+# Full-history `git rev-list --count` for this pin is 231095 (not first-parent).
+# Its tree matches PR15 head 276f3cd, tested with 104/104 configured Meson tests;
+# that is source/build evidence, not this package's build or hardware qualification.
+_commit=7c86130d26cecd50c7af1ac01ff3fa1705d58045
 _src=mesa-omacom
 # Matched to the DRM UAPI in omacom/linux-aurora integration/aurora.
 # The drivers link neither LLVM nor SPIRV-Tools. Arch Linux ARM moves both
