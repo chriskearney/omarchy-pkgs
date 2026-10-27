@@ -1,5 +1,5 @@
 {
-  "source_commit": "8f816ea82cb456de79d3c3cc2339b86c7dea75ce",
+  "source_commit": "a1ab5ff067994677e77b24962d41fec25bbc43b6",
   "hardware_tested": false,
   "stage1_auto_enrollment": false,
   "promotion_gate": "before rc/stable promotion: native build, cold-boot upgrade pairs on M1/M2/M3/Neo, matched Neo boot, repair and upgrade qualification"
