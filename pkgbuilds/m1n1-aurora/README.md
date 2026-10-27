@@ -12,7 +12,7 @@ omarchy-pkgs #1485 is also present upstream, so neither needs a local patch.
 
 The package replaces the downstream `aura` and `m1n1-neo` packages and conflicts
 with the stock `m1n1`; it never automatically replaces the stock package.
-It provides `m1n1=1.6.1.aurora20` for the kernel dependency. An installed
+It provides `m1n1` at its own `pkgver` for the kernel dependency. An installed
 `m1n1-aurora` upgrades normally; an `aura` installation accepts pacman's named
 replacement transaction. `aura` is removed in the same transaction, leaving
 exactly one provider for the boot checker merged in omarchy-mac-pkgs #52.
