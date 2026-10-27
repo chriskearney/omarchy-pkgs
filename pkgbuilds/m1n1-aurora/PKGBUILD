@@ -13,11 +13,11 @@ conflicts=('m1n1' 'aura' 'm1n1-neo')
 replaces=('aura' 'm1n1-neo')
 makedepends=('git' 'clang' 'lld' 'llvm' 'rustup' 'make' 'python')
 options=('!strip' '!debug')
-_commit=a1ab5ff067994677e77b24962d41fec25bbc43b6
+_commit=af6f0d62704aa922e501ed642e5186f451ffaea9
 source=("m1n1::git+$url.git#commit=$_commit"
         build-qualification.json validate-qualification.py
         bootlogo_48.bin bootlogo_128.bin bootlogo_256.bin)
-sha256sums=('SKIP' '2890c5a7fa8104243e70780110e7cfca4428912344f86c30943ba6cb978e497e'
+sha256sums=('SKIP' '182f2ec16cd3a7170a48cb84c72b51d1886462e6ee55939af539e8278e5c7914'
             '43578b83ebea180319b64c9b63377dab6148e997e6f75fd4abcb325484f7ca95'
             '6668050653645711ad7523fe2abeb4cbe85a92c875f3eec754b6db23cea2191c'
             'b19cb017645c7a9068ea0be9b6bb394131d7ca11b28093cf6caa1ffca74b0a4e'

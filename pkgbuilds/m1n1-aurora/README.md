@@ -1,7 +1,7 @@
 # m1n1-aurora
 
 Build the canonical Aurora bootloader package from an immutable omacom/m1n1
-commit. The current candidate is a1ab5ff067994677e77b24962d41fec25bbc43b6
+commit. The current candidate is af6f0d62704aa922e501ed642e5186f451ffaea9
 (merged source PRs #6, #7, #8, #10, #12, #13, #14 and #15, plus omacom/m1n1#18: the
 M3 Airs and M3 Pros hand the display and GPU over by default), with Clang/lld, Rust 1.89.0 and
 `-Os`. The package's existing 48/128/256 artwork is unchanged. The former USB4
