@@ -1,8 +1,9 @@
 # m1n1-aurora
 
 Build the canonical Aurora bootloader package from an immutable omacom/m1n1
-commit. The current candidate is f5a82fdb6264edd2fb0c02e2d0f750bf33380854
-(merged source PRs #6, #7, #8, #10, #12, #13 and #14), with Clang/lld, Rust 1.89.0 and
+commit. The current candidate is 8f816ea82cb456de79d3c3cc2339b86c7dea75ce
+(merged source PRs #6, #7, #8, #10, #12, #13, #14 and #15, plus omacom/m1n1#18: the
+M3 Airs and M3 Pros hand the display and GPU over by default), with Clang/lld, Rust 1.89.0 and
 `-Os`. The package's existing 48/128/256 artwork is unchanged. The former USB4
 alias patch is already in the source; the APFS preboot UUID handoff proposed in
 omarchy-pkgs #1485 is also present upstream, so neither needs a local patch.
